@@ -12,7 +12,15 @@ import os
 
 def RomanticCrown(url):
     req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-    response = urlopen(req).read()
+    try:
+        response = urlopen(req).read()
+    except Exception as e:
+        msg = """
+          <p>获取货品信息错误</p>
+          <a href="{}">货品链接</a>
+          """.format(url)
+        logging.error("Obtaining Item Info Error: {}".format(e))
+        return msg
 
     try:
         html_soup = BeautifulSoup(response, "html.parser")
